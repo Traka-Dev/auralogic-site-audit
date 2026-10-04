@@ -1,0 +1,11 @@
+node_modules/
+dist/
+coverage/
+reports/
+.husky/_/
+.env
+.env.*
+!.env.example
+*.log
+*.tgz
+.DS_Store

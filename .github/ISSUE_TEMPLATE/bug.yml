@@ -1,0 +1,25 @@
+name: Bug report
+description: Report a reproducible problem in the auditor.
+title: '[Bug]: '
+body:
+  - type: textarea
+    id: behavior
+    attributes:
+      label: Expected and actual behavior
+      description: Explain what you expected and what happened.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction
+      description: Include a command and sanitized HTML/XML fixture. Remove private URLs and credentials.
+    validations:
+      required: true
+  - type: input
+    id: versions
+    attributes:
+      label: Environment
+      description: Tool version, Node version, operating system.
+    validations:
+      required: true

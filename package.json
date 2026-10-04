@@ -1,0 +1,77 @@
+{
+  "name": "auralogic-site-audit",
+  "version": "0.1.0",
+  "description": "An open-source CLI and library for auditing XML sitemaps, HTML canonical, hreflang and internal links.",
+  "main": "./dist/index.js",
+  "scripts": {
+    "prepare": "node .husky/install.mjs",
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc --noEmit && tsc -p tsconfig.test.json --noEmit",
+    "lint": "eslint . --max-warnings 0",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "npm run build && vitest run",
+    "test:watch": "npm run build && vitest",
+    "test:coverage": "npm run build && vitest run --coverage",
+    "check": "npm run typecheck && npm run lint && npm run format:check && npm run test:coverage",
+    "audit:site": "npm run build && node dist/cli.js",
+    "prepack": "npm run build",
+    "smoke:package": "npm run build && node scripts/smoke-package.mjs"
+  },
+  "keywords": [
+    "seo",
+    "sitemap",
+    "canonical",
+    "hreflang",
+    "broken-links",
+    "cli"
+  ],
+  "author": "Aura Logic",
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "cheerio": "^1.2.0",
+    "commander": "^15.0.0",
+    "fast-xml-parser": "^5.11.2",
+    "robots-parser": "^3.0.1"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^21.2.3",
+    "@commitlint/config-conventional": "^21.2.3",
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^22.20.5",
+    "@vitest/coverage-v8": "^5.0.3",
+    "eslint": "^10.12.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.6.0",
+    "prettier": "^3.9.9",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.71.0",
+    "vitest": "^5.0.3"
+  },
+  "engines": {
+    "node": ">=22.22.1"
+  },
+  "bin": {
+    "aura-audit": "dist/cli.js"
+  },
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "lint-staged": {
+    "*.{ts,mjs}": [
+      "eslint --fix --max-warnings 0",
+      "prettier --write"
+    ],
+    "*.{json,md,yml,yaml}": "prettier --write"
+  }
+}
