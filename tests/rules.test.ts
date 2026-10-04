@@ -79,6 +79,55 @@ describe('page rules', () => {
 });
 
 describe('reciprocity', () => {
+  it('does not require backlinks to a parameterized duplicate with a declared canonical', () => {
+    const alternates = [
+      alternate('en', 'https://example.com/'),
+      alternate('es', 'https://example.com/es/'),
+    ];
+    const duplicate = page({
+      url: 'https://example.com/?campaign=test',
+      alternates,
+    });
+    const en = page({ alternates });
+    const es = page({
+      url: 'https://example.com/es/',
+      canonical: ['https://example.com/es/'],
+      alternates,
+    });
+    expect(
+      inspectPage(duplicate, false).map((finding) => finding.code),
+    ).toEqual(['HREFLANG_NONCANONICAL_SKIPPED']);
+    expect(
+      inspectAlternates(
+        new Map([
+          [duplicate.url, duplicate],
+          [en.url, en],
+          [es.url, es],
+        ]),
+      ),
+    ).toEqual([]);
+  });
+
+  it('does not duplicate return findings when x-default shares a language URL', () => {
+    const en = page({
+      alternates: [
+        alternate('es', 'https://example.com/es/'),
+        alternate('x-default', 'https://example.com/es/'),
+      ],
+    });
+    const es = page({
+      url: 'https://example.com/es/',
+      canonical: ['https://example.com/es/'],
+    });
+    expect(
+      inspectAlternates(
+        new Map([
+          [en.url, en],
+          [es.url, es],
+        ]),
+      ),
+    ).toHaveLength(1);
+  });
   it('accepts reciprocal language variants', () => {
     const alternates = [
       alternate('en', 'https://example.com/'),

@@ -1,6 +1,16 @@
 import { normalizeUrl } from './parse.js';
 import type { Finding, Page } from './types.js';
 
+function hasDifferentCanonical(page: Page): boolean {
+  const canonical = page.canonical[0];
+  return (
+    page.canonical.length === 1 &&
+    canonical !== undefined &&
+    normalizeUrl(canonical) !== undefined &&
+    canonical !== page.url
+  );
+}
+
 export function inspectPage(page: Page, inSitemap: boolean): Finding[] {
   const findings: Finding[] = [];
   const add = (
@@ -76,7 +86,14 @@ export function inspectPage(page: Page, inSitemap: boolean): Finding[] {
         `Unsupported hreflang syntax: ${alternate.language}.`,
       );
   }
-  if (
+  if (page.alternates.length > 0 && hasDifferentCanonical(page)) {
+    add(
+      'HREFLANG_NONCANONICAL_SKIPPED',
+      'info',
+      'Self-reference and return checks are deferred to the declared canonical, rather than this duplicate URL.',
+      canonical,
+    );
+  } else if (
     page.alternates.length > 0 &&
     !page.alternates.some(
       (alternate) =>
@@ -95,8 +112,11 @@ export function inspectPage(page: Page, inSitemap: boolean): Finding[] {
 export function inspectAlternates(pages: Map<string, Page>): Finding[] {
   const findings: Finding[] = [];
   for (const page of pages.values()) {
+    if (hasDifferentCanonical(page)) continue;
+    const seen = new Set<string>();
     for (const alternate of page.alternates) {
-      if (alternate.url === page.url) continue;
+      if (alternate.url === page.url || seen.has(alternate.url)) continue;
+      seen.add(alternate.url);
       const target = pages.get(alternate.url);
       if (!target) continue;
       if (!target.alternates.some((item) => item.url === page.url)) {

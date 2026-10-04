@@ -16,6 +16,8 @@ HTML head annotations are checked for absolute HTTP(S) URLs, common language/scr
 
 This version does not validate code registry membership, actual content language, identical cluster membership, or header/XML annotations. Cross-origin translations can be valid; the crawler simply does not fetch them in this version.
 
+Self-reference and return-link checks are performed on canonical source pages. When a fetched URL declares one valid different canonical (for example a campaign or estimator URL with query parameters), the tool emits `HREFLANG_NONCANONICAL_SKIPPED` and checks the canonical page separately. It does not require language alternates to link back to every duplicate parameterized URL. The declared canonical remains a hint, not evidence of Google's canonical selection.
+
 ## Internal links
 
 Anchor links on the exact same origin (scheme, hostname and port) are crawled. Fragments are removed and query strings are preserved. HTTP 4xx/5xx targets are reported with their referring page. Network failures are incomplete checks, not proof of a broken link. Successful redirects are notes, or warnings when the source is a sitemap URL. Binary targets are checked for status but not downloaded for analysis.
