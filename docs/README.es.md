@@ -7,6 +7,8 @@ Auditor open source de sitemaps XML, canonical en HTML, hreflang en HTML y enlac
 Requiere Node.js 24 LTS o Node.js 22.22.1+.
 
 ```bash
+git clone https://github.com/Traka-Dev/auralogic-site-audit.git
+cd auralogic-site-audit
 npm ci
 npm run build
 node dist/cli.js https://example.com

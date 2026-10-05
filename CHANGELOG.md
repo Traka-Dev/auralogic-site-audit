@@ -13,6 +13,11 @@ All notable changes to this project will be documented here. The format follows 
 - Husky, lint-staged, Conventional Commits, ESLint, Prettier and strict TypeScript.
 - CI, Dependabot, issue templates, contribution guidelines and MIT license.
 
+### Security
+
+- Bound retained response bodies to a 32 MiB UTF-8 byte budget and limit sitemap entries and discovered URLs.
+- Escape terminal and bidirectional control characters in text reports and runtime error messages.
+
 ### Fixed
 
 - Avoid false hreflang self-reference and return-link failures on duplicate parameterized URLs that declare a different canonical.

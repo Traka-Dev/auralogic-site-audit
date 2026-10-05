@@ -50,6 +50,12 @@ describe('URL and HTML parsing', () => {
 });
 
 describe('XML sitemaps', () => {
+  it('rejects sitemap documents with excessive entry counts', () => {
+    const entries = '<url><loc>https://example.com/</loc></url>'.repeat(10001);
+    expect(() => parseSitemap(`<urlset>${entries}</urlset>`)).toThrow(
+      '10,000 entry',
+    );
+  });
   it('supports namespaced indexes and decodes standard XML entities', () => {
     expect(
       parseSitemap(

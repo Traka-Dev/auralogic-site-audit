@@ -3,6 +3,20 @@ import { HttpClient } from '../src/http.js';
 import { fixture } from './helpers.js';
 
 describe('bounded HTTP client', () => {
+  it('does not retain response bodies beyond the cache budget', async () => {
+    const server = await fixture((_, res) => {
+      res.setHeader('Content-Type', 'text/plain');
+      res.end('a body larger than the cache budget');
+    });
+    try {
+      const client = new HttpClient(server.origin, 3, 1000, 0, 8);
+      await client.get(server.origin);
+      await client.get(server.origin);
+      expect(client.requests).toBe(2);
+    } finally {
+      await server.close();
+    }
+  });
   it('reuses requests and enforces request budgets', async () => {
     const server = await fixture((_, res) => {
       res.setHeader('Content-Type', 'text/plain');

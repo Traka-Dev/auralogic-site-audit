@@ -4,6 +4,43 @@ import { formatReport } from '../src/report.js';
 import { fixture, html } from './helpers.js';
 
 describe('site audit integration', () => {
+  it('bounds discovery across multiple sitemaps and HTML links', async () => {
+    const server = await fixture((req, res, origin) => {
+      if (req.url === '/robots.txt') {
+        res.setHeader('Content-Type', 'text/plain');
+        res.end('');
+      } else if (req.url === '/index.xml') {
+        res.setHeader('Content-Type', 'application/xml');
+        res.end(
+          `<sitemapindex><sitemap><loc>${origin}/a.xml</loc></sitemap><sitemap><loc>${origin}/b.xml</loc></sitemap></sitemapindex>`,
+        );
+      } else if (req.url === '/a.xml' || req.url === '/b.xml') {
+        const offset = req.url === '/a.xml' ? 0 : 6000;
+        res.setHeader('Content-Type', 'application/xml');
+        res.end(
+          `<urlset>${Array.from({ length: 6000 }, (_, index) => `<url><loc>${origin}/page/${index + offset}</loc></url>`).join('')}</urlset>`,
+        );
+      } else {
+        res.setHeader('Content-Type', 'text/html');
+        res.end(html(origin + '/', '', '<a href="/extra">Extra</a>'));
+      }
+    });
+    try {
+      const report = await audit({
+        url: server.origin,
+        sitemap: '/index.xml',
+        maxPages: 1,
+        delayMs: 0,
+      });
+      expect(report.complete).toBe(false);
+      expect(report.summary.sitemapUrls).toBe(10000);
+      expect(
+        report.findings.filter((finding) => finding.code === 'DISCOVERY_LIMIT'),
+      ).toHaveLength(2);
+    } finally {
+      await server.close();
+    }
+  });
   it('discovers sitemap indexes, checks internal links and reciprocal alternates', async () => {
     const requested: string[] = [];
     const server = await fixture((req, res, origin) => {

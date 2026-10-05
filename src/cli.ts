@@ -3,7 +3,7 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import { dirname } from 'node:path';
 import { Command, InvalidArgumentError } from 'commander';
 import { audit } from './audit.js';
-import { formatReport } from './report.js';
+import { escapeTerminal, formatReport } from './report.js';
 
 const integer = (value: string): number => {
   if (
@@ -70,7 +70,7 @@ try {
   process.exitCode = report.complete ? (report.summary.errors ? 1 : 0) : 2;
 } catch (error) {
   console.error(
-    `Aura audit failed: ${error instanceof Error ? error.message : String(error)}`,
+    `Aura audit failed: ${escapeTerminal(error instanceof Error ? error.message : String(error))}`,
   );
   process.exitCode = 2;
 }

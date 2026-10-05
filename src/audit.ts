@@ -144,6 +144,16 @@ export async function audit(options: AuditOptions): Promise<AuditReport> {
         }
         if (sitemap.type === 'index') await readSitemap(target);
         else {
+          if (!sitemapUrls.has(target) && sitemapUrls.size >= 10000) {
+            complete = false;
+            add(
+              'DISCOVERY_LIMIT',
+              'warning',
+              url,
+              'Discovered sitemap URL limit (10,000) reached.',
+            );
+            break;
+          }
           if (sitemapUrls.has(target))
             add(
               'SITEMAP_DUPLICATE',
@@ -186,6 +196,7 @@ export async function audit(options: AuditOptions): Promise<AuditReport> {
   }
 
   const queue = new Set([site, ...sitemapUrls]);
+  let discoveryLimited = false;
   const pages = new Map<string, Page>();
   const failed = new Set<string>();
   for (const url of queue) {
@@ -240,7 +251,19 @@ export async function audit(options: AuditOptions): Promise<AuditReport> {
       ...page.alternates.map((alternate) => alternate.url),
     ]) {
       if (!normalizeUrl(target)) continue;
-      if (sameOrigin(target)) queue.add(target);
+      if (sameOrigin(target)) {
+        if (!queue.has(target) && queue.size >= 10001) {
+          complete = false;
+          if (!discoveryLimited)
+            add(
+              'DISCOVERY_LIMIT',
+              'warning',
+              site,
+              'URL discovery limit (10,000 plus the starting URL) reached.',
+            );
+          discoveryLimited = true;
+        } else queue.add(target);
+      }
     }
   }
   findings.push(...inspectAlternates(pages));

@@ -15,12 +15,14 @@ export class HttpClient {
   delayMs: number;
   isAllowed: (url: string) => boolean = () => true;
   private readonly cache = new Map<string, Resource>();
+  private cacheBytes = 0;
 
   constructor(
     private readonly origin: string,
     private readonly maxRequests: number,
     private readonly timeoutMs: number,
     delayMs: number,
+    private readonly maxCacheBytes = 32 * 1024 * 1024,
   ) {
     this.delayMs = delayMs;
   }
@@ -89,7 +91,11 @@ export class HttpClient {
         robots: response.headers.get('x-robots-tag') ?? '',
         body,
       };
-      this.cache.set(url, resource);
+      const bytes = Buffer.byteLength(body, 'utf8');
+      if (this.cacheBytes + bytes <= this.maxCacheBytes) {
+        this.cache.set(url, resource);
+        this.cacheBytes += bytes;
+      }
       return resource;
     }
     throw new Error('Redirect limit reached.');

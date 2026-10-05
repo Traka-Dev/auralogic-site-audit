@@ -2,7 +2,7 @@
 
 ## Sitemap
 
-Discovery uses `Sitemap:` lines in robots.txt, then `/sitemap.xml` and `/sitemap-index.xml` if none are declared. You can override discovery with `--sitemap`. Both urlsets and nested indexes are supported. XML must be well formed; custom entities and DOCTYPE are rejected. Maximum 20 sitemap documents and 2 MiB per textual response.
+Discovery uses `Sitemap:` lines in robots.txt, then `/sitemap.xml` and `/sitemap-index.xml` if none are declared. You can override discovery with `--sitemap`. Both urlsets and nested indexes are supported. XML must be well formed; custom entities and DOCTYPE are rejected. Maximum 20 sitemap documents, 10,000 entries per document, 10,000 discovered URLs plus the starting URL, and 2 MiB per textual response. Exceeding a supported limit produces a partial report.
 
 Sitemap URLs are compared against canonical and noindex annotations on fetched HTML pages. A different canonical is a warning, not proof that Google has selected another URL. Duplicate loc values and unsupported cross-origin entries are reported. Empty sitemaps are accepted.
 

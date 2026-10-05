@@ -65,7 +65,11 @@
   "files": [
     "dist",
     "README.md",
-    "LICENSE"
+    "LICENSE",
+    "SECURITY.md",
+    "CONTRIBUTING.md",
+    "CODE_OF_CONDUCT.md",
+    "docs"
   ],
   "lint-staged": {
     "*.{ts,mjs}": [
@@ -73,5 +77,13 @@
       "prettier --write"
     ],
     "*.{json,md,yml,yaml}": "prettier --write"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Traka-Dev/auralogic-site-audit.git"
+  },
+  "homepage": "https://github.com/Traka-Dev/auralogic-site-audit#readme",
+  "bugs": {
+    "url": "https://github.com/Traka-Dev/auralogic-site-audit/issues"
   }
 }

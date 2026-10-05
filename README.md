@@ -2,7 +2,7 @@
 
 An open-source CLI and TypeScript library for checking XML sitemaps, HTML canonical tags, HTML hreflang annotations, and broken internal links.
 
-Built by [Aura Logic](https://auralogic.dev). MIT licensed. **Early development, v0.1.0.** This repository is currently local; an npm package and hosted demo have not been published.
+Built by [Aura Logic](https://auralogic.dev). MIT licensed. **Early development, v0.1.0.** Source code is available on GitHub. An npm package and hosted demo have not been published.
 
 [Español](docs/README.es.md) · [Contributing](CONTRIBUTING.md) · [Checks and limitations](docs/checks.md) · [Security](SECURITY.md)
 
@@ -11,6 +11,7 @@ Built by [Aura Logic](https://auralogic.dev). MIT licensed. **Early development,
 Use Node.js 24 LTS (recommended) or Node.js 22.22.1+ and npm.
 
 ```bash
+git clone https://github.com/Traka-Dev/auralogic-site-audit.git
 cd auralogic-site-audit
 npm ci
 npm run build
@@ -72,6 +73,10 @@ console.log(formatReport(report));
 ```
 
 The package import above is intended for a locally linked or installed tarball until a release is published. See [the example](examples/audit.mjs) and [report schema](docs/report.md).
+
+## Contributing
+
+Bug reports, documentation improvements and focused pull requests are welcome. Start with [CONTRIBUTING.md](CONTRIBUTING.md), follow the [code of conduct](CODE_OF_CONDUCT.md), and use [private vulnerability reporting](https://github.com/Traka-Dev/auralogic-site-audit/security/advisories/new) for security issues.
 
 ## Development
 

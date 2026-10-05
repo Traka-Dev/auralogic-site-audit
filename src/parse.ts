@@ -92,5 +92,7 @@ export function parseSitemap(xml: string): Sitemap {
       throw new Error('Sitemap entry has no loc.');
     return entry.loc.trim();
   });
+  if (locations.length > 10000)
+    throw new Error('Sitemap exceeds the 10,000 entry limit.');
   return { type: isIndex ? 'index' : 'urls', locations };
 }
