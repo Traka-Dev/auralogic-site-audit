@@ -69,7 +69,9 @@
     "SECURITY.md",
     "CONTRIBUTING.md",
     "CODE_OF_CONDUCT.md",
-    "docs"
+    "docs",
+    "prompts",
+    "setup"
   ],
   "lint-staged": {
     "*.{ts,mjs}": [

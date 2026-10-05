@@ -27,6 +27,12 @@ try {
     'dist/index.d.ts',
     'README.md',
     'LICENSE',
+    'docs/ai-workflow.md',
+    'prompts/triage.md',
+    'prompts/repair.md',
+    'prompts/verify.md',
+    'setup/AGENTS.example.md',
+    'setup/CLAUDE.example.md',
   ]) {
     if (!paths.includes(required))
       throw new Error(`Missing package file: ${required}`);

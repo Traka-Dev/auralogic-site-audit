@@ -62,9 +62,15 @@ The report identifies the affected URL, destination and reason for each finding.
 node dist/cli.js http://127.0.0.1:4329 --json --output reports/demo.json
 ```
 
-Open `reports/demo.json` to inspect the summary and structured findings, or use them in CI and other tooling. File output leaves stdout empty; the demo still exits with code `1`. Stop the fixture with `Ctrl+C` when finished.
+Open `reports/demo.json` to inspect the summary and structured findings, or use them in CI and other tooling. File output leaves stdout empty; the demo still exits with code `1`. Stop the fixture with `Ctrl+C` when finished. Restart with `node examples/demo-site.mjs --fixed` to audit the corrected version: the same two pages, no errors or warnings, and exit code `0`.
 
 ![Exported JSON report showing schema version, coverage status, summary counts and the structured findings from the same local demo.](docs/images/json-report.png)
+
+## AI repair kit
+
+Use the [AI workflow](docs/ai-workflow.md) to triage a JSON report, repair one verified defect group, and compare a follow-up audit. Includes [three prompts](prompts/triage.md) and optional [Codex](setup/AGENTS.example.md) / [Claude Code](setup/CLAUDE.example.md) project instructions. No AI integration or configuration is installed automatically.
+
+Read the [practical Astro tutorial](https://auralogic.dev/insights/audit-hreflang-canonical-astro/) or explore the [tool page](https://auralogic.dev/tools/site-audit/).
 
 ## What it checks
 
@@ -132,7 +138,6 @@ The CLI supports localhost/private networks intentionally. It is not a server co
 - More detailed canonical and alternate-cluster diagnostics.
 - Report comparison for CI regressions.
 - A web demo, after adding protection for untrusted URLs.
-- AI prompts and assistant setup that consume evidence from these reports.
 
 ## References
 

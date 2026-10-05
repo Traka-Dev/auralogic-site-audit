@@ -6,6 +6,9 @@ All notable changes to this project will be documented here. The format follows 
 
 ### Added
 
+- Evidence-based AI triage, repair and verification prompts, with optional Codex and Claude Code project instruction templates.
+- Before/after learning workflow using the local demo’s `--fixed` mode.
+
 - CLI and typed library for sitemap, HTML canonical, HTML hreflang and internal link audits.
 - JSON and text reports with explicit findings, request counts and coverage status.
 - Robots-aware crawling with request, page, timeout, redirect and response-size limits.
