@@ -12,6 +12,7 @@ All notable changes to this project will be documented here. The format follows 
 - Local fixture tests and coverage thresholds.
 - Husky, lint-staged, Conventional Commits, ESLint, Prettier and strict TypeScript.
 - CI, Dependabot, issue templates, contribution guidelines and MIT license.
+- Visual usage examples in English and Spanish, with a reproducible local demo and CLI/JSON screenshots.
 
 ### Security
 

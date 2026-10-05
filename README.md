@@ -4,7 +4,7 @@ An open-source CLI and TypeScript library for checking XML sitemaps, HTML canoni
 
 Built by [Aura Logic](https://auralogic.dev). MIT licensed. **Early development, v0.1.0.** Source code is available on GitHub. An npm package and hosted demo have not been published.
 
-[Español](docs/README.es.md) · [Contributing](CONTRIBUTING.md) · [Checks and limitations](docs/checks.md) · [Security](SECURITY.md)
+[Aura Logic — website](https://auralogic.dev/) · [Español](docs/README.es.md) · [Contributing](CONTRIBUTING.md) · [Checks and limitations](docs/checks.md) · [Security](SECURITY.md)
 
 ## Get started
 
@@ -33,6 +33,38 @@ node dist/cli.js https://example.com \
 ```
 
 The executable name is `aura-audit`. To use it locally after building, run `npm link`.
+
+## See it in action
+
+These images render actual CLI output from the included local documentation fixture. The fixture deliberately contains a broken link and a missing hreflang return annotation; they are examples, not findings about Aura Logic's website.
+
+### 1. Run an audit
+
+After building, start the local fixture in one terminal:
+
+```bash
+node examples/demo-site.mjs
+```
+
+In another terminal, run:
+
+```bash
+node dist/cli.js http://127.0.0.1:4329
+```
+
+The report identifies the affected URL, destination and reason for each finding. This demo exits with code `1` because it includes intentional errors.
+
+![CLI audit showing two HTML pages, two sitemap URLs and three errors: a broken internal link, a missing hreflang return annotation and an HTTP 404.](docs/images/cli-audit.png)
+
+### 2. Export a JSON report
+
+```bash
+node dist/cli.js http://127.0.0.1:4329 --json --output reports/demo.json
+```
+
+Open `reports/demo.json` to inspect the summary and structured findings, or use them in CI and other tooling. File output leaves stdout empty; the demo still exits with code `1`. Stop the fixture with `Ctrl+C` when finished.
+
+![Exported JSON report showing schema version, coverage status, summary counts and the structured findings from the same local demo.](docs/images/json-report.png)
 
 ## What it checks
 
