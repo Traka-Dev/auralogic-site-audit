@@ -2,6 +2,7 @@ import { createServer } from 'node:http';
 import { URL } from 'node:url';
 
 // Local documentation fixture. The broken link and missing return annotation are intentional.
+const fixed = process.argv.includes('--fixed');
 const port = 4329;
 const origin = `http://127.0.0.1:${port}`;
 const server = createServer((request, response) => {
@@ -17,11 +18,11 @@ const server = createServer((request, response) => {
   } else if (route === '/' || route === '/es/') {
     response.setHeader('Content-Type', 'text/html; charset=utf-8');
     const alternates =
-      route === '/'
+      fixed || route === '/'
         ? `<link rel="alternate" hreflang="en" href="${origin}/"><link rel="alternate" hreflang="es" href="${origin}/es/">`
         : `<link rel="alternate" hreflang="es" href="${origin}/es/">`;
     response.end(
-      `<!doctype html><html lang="${route === '/' ? 'en' : 'es'}"><head><meta charset="utf-8"><title>Aura audit documentation demo</title><link rel="canonical" href="${origin}${route}">${alternates}</head><body><h1>Documentation fixture</h1><p>This local demo intentionally contains SEO defects.</p>${route === '/' ? '<a href="/missing-page">Broken link example</a><a href="/es/">Español</a>' : '<p>Missing hreflang return annotation example.</p>'}</body></html>`,
+      `<!doctype html><html lang="${route === '/' ? 'en' : 'es'}"><head><meta charset="utf-8"><title>Aura audit documentation demo</title><link rel="canonical" href="${origin}${route}">${alternates}</head><body><h1>Documentation fixture</h1><p>${fixed ? 'Corrected documentation fixture.' : 'This local demo intentionally contains SEO defects.'}</p>${route === '/' ? (fixed ? '<a href="/es/">Español</a>' : '<a href="/missing-page">Broken link example</a><a href="/es/">Español</a>') : fixed ? '<p>Reciprocal hreflang annotations restored.</p>' : '<p>Missing hreflang return annotation example.</p>'}</body></html>`,
     );
   } else {
     response.statusCode = 404;
@@ -36,7 +37,9 @@ server.on('error', (error) => {
 server.listen(port, '127.0.0.1', () => {
   console.log(`Documentation fixture: ${origin}`);
   console.log(
-    'Includes an intentional broken link and missing hreflang return tag.',
+    fixed
+      ? 'Corrected fixture: reciprocal alternates and valid internal links.'
+      : 'Includes an intentional broken link and missing hreflang return tag.',
   );
   console.log('Press Ctrl+C to stop.');
 });

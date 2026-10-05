@@ -52,3 +52,9 @@ npm run test:watch
 ```
 
 Husky valida los archivos preparados para commit, commitlint exige Conventional Commits y el hook de push ejecuta los checks. Las contribuciones deben incluir evidencia o una prueba que reproduzca el problema. Consulta [CONTRIBUTING.md](../CONTRIBUTING.md).
+
+## Kit de reparación con IA
+
+La [guía de trabajo](ai-workflow.md) incluye prompts para [clasificar](../prompts/triage.md), [corregir](../prompts/repair.md) y [verificar](../prompts/verify.md), junto con instrucciones opcionales para [Codex](../setup/AGENTS.example.md) y [Claude Code](../setup/CLAUDE.example.md). Pide respuestas en español. Revisa e integra los ejemplos sin sobrescribir las instrucciones existentes; no se instala ninguna integración de IA.
+
+Consulta el [tutorial de Astro](https://auralogic.dev/es/insights/auditar-hreflang-canonical-astro/) y la [página del auditor](https://auralogic.dev/es/herramientas/auditor-seo/).
